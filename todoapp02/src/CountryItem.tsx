@@ -6,7 +6,6 @@ type CountryItemPropsType = {
 };
 
 const CountryItem = (props: CountryItemPropsType) => {
-  console.log(props.countryitem);
   let item = props.countryitem;
   return (
     <li className={item.visited ? 'list-group-item active' : 'list-group-item'}>
