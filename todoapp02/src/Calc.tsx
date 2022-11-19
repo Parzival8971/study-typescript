@@ -48,9 +48,15 @@ const calcChecker = (props: any, propName: string, componentName: string) => {
 };
 
 Calc.propTypes = {
-  x: PropTypes.number.isRequired,
+  x: PropTypes.number,
   y: calcChecker,
   oper: calcChecker,
+};
+
+Calc.defaultProps = {
+  x: 100,
+  y: 20,
+  oper: '+',
 };
 
 export default Calc;

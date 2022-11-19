@@ -1,5 +1,5 @@
 import React from 'react';
-import { CountryType } from './App';
+import { CountryType } from './App01';
 
 type CountryItemPropsType = {
   countryitem: CountryType;
