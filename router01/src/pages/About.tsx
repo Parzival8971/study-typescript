@@ -8,8 +8,6 @@ const About = ({ title }: Props) => {
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
 
-  // console.log(searchParams);
-
   useEffect(() => {
     const strPage = searchParams.get('page');
     setPage(parseInt(strPage !== null ? strPage : '1', 10));

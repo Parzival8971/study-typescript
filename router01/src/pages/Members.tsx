@@ -1,16 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MemberType } from '../App';
 
 type Props = { members: Array<MemberType> };
 
 const Members = ({ members }: Props) => {
+  const navigate = useNavigate();
+  const goHome = () => {
+    if (window.confirm('정말로 홈으로 이동할까요?')) {
+      navigate('/', { state: { from: '/members' } });
+    }
+  };
+
   let imgstyle = { width: 90, height: 80 };
   let list = members.map((member) => {
     return (
-      <div
-        className='col-12 col-xs-6 col-sm-6 col-md-4 col-lg-3'
-        key={member.name}
-      >
+      <div className='col-6 col-md-4 col-lg-3' key={member.name}>
         <img
           src={member.photo}
           className='img-thumbnail'
@@ -30,6 +35,9 @@ const Members = ({ members }: Props) => {
       <div className='container'>
         <div className='row'>{list}</div>
       </div>
+      <button className='btn btn-secondary' onClick={goHome}>
+        Go Home
+      </button>
     </div>
   );
 };

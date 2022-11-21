@@ -5,7 +5,6 @@ type Props = { songs: Array<SongType> };
 
 const SongList = ({ songs }: Props) => {
   const pathMatch = useMatch('/songs/:id');
-  console.log(pathMatch);
   let param_id: number = pathMatch?.params?.id
     ? parseInt(pathMatch.params.id, 10)
     : -1;
@@ -29,7 +28,7 @@ const SongList = ({ songs }: Props) => {
     <div>
       <h2 className='m-5'>Song List</h2>
       <ul className='list-group'>{list}</ul>
-      <Outlet />
+      <Outlet context={{ songs: songs }} />
     </div>
   );
 };
