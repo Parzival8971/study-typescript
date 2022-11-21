@@ -13,6 +13,7 @@ import { useState } from 'react';
 
 import Player from './pages/songs/Player';
 import SongIndex from './pages/songs/Index';
+import NotFound from './components/NotFound';
 
 export type MemberType = { name: string; photo: string };
 
@@ -100,6 +101,7 @@ function App() {
              */}
             <Route path=':id' element={<Player />} />
           </Route>
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
     </Router>
