@@ -15,6 +15,7 @@ const EditTodo = ({ callbacks, states }: PropsType) => {
     navigate('/todos');
     return <></>;
   }
+  // useState 하단의 작성할 경우?
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [todoOne, setTodoOne] = useState<TodoItemType>({ ...todoItem });
 
