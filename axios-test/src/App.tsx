@@ -1,26 +1,37 @@
-import React from 'react';
-import './App.css';
 import axios from 'axios';
+import React from 'react';
 
-const requestAPI = () => {
-  // const url = 'http://todosvc.herokuapp.com/todolist/gdhong';
-  // const url = 'http://localhost:8000/todolist/gbhong';
-  const url = '/api/todolist/gdhong';
-  axios.get(url).then((response) => {
-    console.log('# 응답 객채 : ', response);
-  });
+const requestAPI = async () => {
+  const url = '/api/todolist_long/gdhong';
+  try {
+    const response = await axios.get(url, { timeout: 900 });
+    console.log('# 응답객체 : ', response);
+  } catch (e) {
+    console.log('## 다음 오류가 발생했습니다.');
+    if (e instanceof Error) console.log(e.message);
+    else console.log(e);
+  }
 };
 
+// Promise 형식
+// const requestAPI = async () => {
+//   const url = "/api/todolist_long/gdhong";
+//   axios
+//     .get(url, { timeout: 900 })
+//     .then((response) => {
+//       console.log("# 응답객체 : ", response);
+//     })
+//     .catch((e) => {
+//       if (e instanceof Error) console.log(e.message);
+//       else console.log(e);
+//     });
+// };
+
 requestAPI();
+type Props = {};
 
-function App() {
-  return (
-    <div className='App'>
-      <header className='App-header'>
-        <h2>Console.log를 확인하세요</h2>
-      </header>
-    </div>
-  );
-}
+const App6 = (props: Props) => {
+  return <h2>Console Log를 확인합니다.</h2>;
+};
 
-export default App;
+export default App6;
