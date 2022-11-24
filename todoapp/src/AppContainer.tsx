@@ -9,8 +9,9 @@ export type TodoItemType = {
   desc: string;
   done: boolean;
 };
-export type StatesType = { todoList: Array<TodoItemType> };
+export type StatesType = { todoList: Array<TodoItemType>; isLoading: boolean };
 export type CallbacksType = {
+  fetchTodoList: () => void;
   addTodo: (todo: string, desc: string, callback: () => void) => void;
   deleteTodo: (id: number) => void;
   toggleDone: (id: number) => void;
@@ -26,10 +27,12 @@ export type CallbacksType = {
 //다른 사용자명을 사용하려면 다음 경로로 요청하여 사용자 데이터를 만드세요
 // -->   http://localhost:8000/todolist/[user명]/create
 const USER = 'gdhong';
-const BASEURI = '/api/todolist/' + USER;
+//const BASEURI = "/api/todolist/" + USER;
+const BASEURI = '/api/todolist_long/' + USER;
 
 const AppContainer = () => {
   let [todoList, setTodoList] = useState<Array<TodoItemType>>([]);
+  let [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTodoList();
@@ -38,6 +41,7 @@ const AppContainer = () => {
   //할일 목록 조회 기능을 제공하는 함수
   const fetchTodoList = async () => {
     setTodoList([]);
+    setIsLoading(true);
     try {
       const response = await axios.get(BASEURI);
       console.log('조회', response);
@@ -46,11 +50,13 @@ const AppContainer = () => {
       if (e instanceof Error) alert('조회 실패 :' + e.message);
       else alert('조회 실패 :' + e);
     }
+    setIsLoading(false);
   };
 
   //할일 추가 기능을 제공하는 함수
   //할일을 추가가 성공하면 마지막 인자로 전달된 callback을 호출합니다.
   const addTodo = async (todo: string, desc: string, callback: () => void) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(BASEURI, { todo, desc });
       console.log('추가', response);
@@ -69,10 +75,12 @@ const AppContainer = () => {
       if (e instanceof Error) alert('할일 추가실패:' + e.message);
       else alert('할일 추가실패:' + e);
     }
+    setIsLoading(false);
   };
 
   //할일 한건을 삭제하는 기능을 제공하는 함수
   const deleteTodo = async (id: number) => {
+    setIsLoading(true);
     try {
       const response = await axios.delete(`${BASEURI}/${id}`);
       if (response.data.status === 'success') {
@@ -88,10 +96,13 @@ const AppContainer = () => {
       if (e instanceof Error) alert('할일 삭제 실패:' + e.message);
       else alert('할일 삭제 실패:' + e);
     }
+    setIsLoading(false);
   };
 
   //할일의 완료 여부를 토글하는 기능을 제공하는 함수
   const toggleDone = async (id: number) => {
+    setIsLoading(true);
+
     try {
       let todoItem = todoList.find((todo) => todo.id === id);
       const response = await axios.put(`${BASEURI}/${id}`, {
@@ -112,6 +123,7 @@ const AppContainer = () => {
       if (e instanceof Error) alert('완료 토글 실패:' + e.message);
       else alert('완료 토글 실패:' + e);
     }
+    setIsLoading(false);
   };
 
   //할일 수정 기능을 제공하는 함수
@@ -123,6 +135,7 @@ const AppContainer = () => {
     done: boolean,
     callback: () => void
   ) => {
+    setIsLoading(true);
     try {
       const response = await axios.put(`${BASEURI}/${id}`, {
         todo,
@@ -144,15 +157,18 @@ const AppContainer = () => {
       if (e instanceof Error) alert('할일 수정 실패 :' + e.message);
       else alert('할일 수정 실패 :' + e);
     }
+    setIsLoading(false);
   };
 
   const callbacks: CallbacksType = {
+    fetchTodoList,
     addTodo,
     deleteTodo,
     updateTodo,
     toggleDone,
   };
-  const states: StatesType = { todoList };
+
+  const states: StatesType = { todoList, isLoading };
   return <App callbacks={callbacks} states={states} />;
 };
 
