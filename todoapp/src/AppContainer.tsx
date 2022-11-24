@@ -40,6 +40,7 @@ const AppContainer = () => {
     setTodoList([]);
     try {
       const response = await axios.get(BASEURI);
+      console.log('조회', response);
       setTodoList(response.data);
     } catch (e) {
       if (e instanceof Error) alert('조회 실패 :' + e.message);
@@ -52,6 +53,7 @@ const AppContainer = () => {
   const addTodo = async (todo: string, desc: string, callback: () => void) => {
     try {
       const response = await axios.post(BASEURI, { todo, desc });
+      console.log('추가', response);
       if (response.data.status === 'success') {
         //한건의 할일 추가가 성공이라면 전체 할일 목록을 다시 조회하는 것이 아니라
         //추가된 한건의 정보만 state에 추가합니다.
@@ -96,6 +98,7 @@ const AppContainer = () => {
         ...todoItem,
         done: !todoItem?.done,
       });
+      console.log('토글', response);
       if (response.data.status === 'success') {
         let index = todoList.findIndex((todo) => todo.id === id);
         let newTodoList = produce(todoList, (draft) => {
@@ -126,6 +129,7 @@ const AppContainer = () => {
         desc,
         done,
       });
+      console.log('수정', response);
       if (response.data.status === 'success') {
         let index = todoList.findIndex((todo) => todo.id === id);
         let newTodoList = produce(todoList, (draft) => {
